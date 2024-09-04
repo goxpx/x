@@ -261,6 +261,10 @@ func (h *forwardHandler) handleHTTP(ctx context.Context, rw io.ReadWriteCloser, 
 					req.Host = httpSettings.Host
 				}
 				for k, v := range httpSettings.Header {
+					if strings.ToUpper(k) == "X-REAL-IP" {
+						req.Header.Set(k, remoteAddr.String())
+						continue
+					}
 					req.Header.Set(k, v)
 				}
 
